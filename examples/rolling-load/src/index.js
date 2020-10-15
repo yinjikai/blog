@@ -35,10 +35,11 @@ const Demo = () => {
   }
 
   const handleScroll = () => {
+    //请求中忽略滚动
     if (loadingVisibility || isFetching.current) {
       return
     }
-    const currentPos = window.innerHeight + wrapEle.current.scrollTop
+    const currentPos = wrapEle.current.clientHeight + wrapEle.current.scrollTop
     console.log(currentPos, innerEle.current.offsetHeight)
     if (currentPos + 100 >= innerEle.current.offsetHeight) {
       console.log(currentPage + 1)
