@@ -11,14 +11,19 @@ const Demo = () => {
   const [loadingVisibility, setLoadingVisibility] = useState(false)
   //当前页码
   const [currentPage, setCurrentPage] = useState(1)
+  //请求状态
+  const isFetching = useRef(false)
   //获取列表数据
   const fetchData = (page = 1) => {
+    if (isFetching.current) return
+    isFetching.current = true
     fetch(`http://localhost:3000?page=${page}`)
       .then((res) => {
         return res.json()
       })
       .then((res) => {
         console.log('fetchDone')
+        isFetching.current = false
         setLoadingVisibility(false)
         setPageData([...pageData, ...res.data])
       })
@@ -30,7 +35,7 @@ const Demo = () => {
   }
 
   const handleScroll = () => {
-    if (loadingVisibility) {
+    if (loadingVisibility || isFetching.current) {
       return
     }
     const currentPos = window.innerHeight + wrapEle.current.scrollTop
@@ -58,13 +63,7 @@ const Demo = () => {
   }
 
   useEffect(() => {
-    let outdate = false
-    if (!outdate) {
-      fetchData(currentPage)
-    }
-    return () => {
-      outdate = true
-    }
+    fetchData(currentPage)
   }, [currentPage])
   useEffect(() => {
     wrapEle.current.addEventListener('scroll', throttle(), false)

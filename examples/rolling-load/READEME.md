@@ -9,3 +9,11 @@
 ### 2.启动
 
 > npm start
+
+### 演示
+
+![demo](/examples/rolling-load/demo.gif)
+
+### todo
+
+- [ ] 优化请求逻辑
